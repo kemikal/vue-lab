@@ -1,19 +1,61 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Hello VUE</h1>
+    <p>Välkommen {{ user.firstName }} {{ user.lastName }}!</p>
+
+    <div>
+      Du har klickat {{ clicked }} gånger!
+      <button @click="onClick">Klicka</button>  
+
+    <div v-if="clicked > 5">
+      Bra klickat!
+    </div>
+
+      <UserForm :user="user" @save="handleSubmit"/>
+
+      <Pokemon />
+
+    </div>
+
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import UserForm from "./components/UserForm.vue";
+import Pokemon from "./components/Pokemon.vue";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  
+  data() {
+    return {
+      user: {firstName: localStorage.getItem("firstName"), lastName: localStorage.getItem("lastName")},
+      clicked: 0,
+      
+    }
+  },
+  components: { UserForm, Pokemon },
+  methods: {
+    onClick() {
+      console.log("Klick på knappen!");
+      this.clicked ++
+    },
+    handleSubmit(event) {
+      event.preventDefault();
+      console.log("Formulär sparat!", event.target.firstName.value);
+
+      localStorage.setItem("firstName", event.target.firstName.value);
+      localStorage.setItem("lastName", event.target.lastName.value);
+
+
+    }
   }
+
 }
+
+
+
 </script>
 
 <style>
